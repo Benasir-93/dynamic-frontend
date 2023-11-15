@@ -36,7 +36,7 @@ export default function Signup() {
   async function sendData(values) {
     setLoading(true);
     let { data } = await axios
-      .post(`http://localhost:8080/api/user/signup`, values)
+      .post(`https://dynamicportfoliobackend.onrender.com/api/user/signup`, values)
       .then((response) => {
         return response;
       })

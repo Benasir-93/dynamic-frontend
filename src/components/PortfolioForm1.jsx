@@ -44,7 +44,7 @@ const handleSubmit = async (e) => {
 e.preventDefault();
 
 try {
-const response = await axios.post('http://localhost:8080/api/portfolio/addportfolio', formData);
+const response = await axios.post('https://dynamicportfoliobackend.onrender.com/api/portfolio/addportfolio', formData);
 console.log("before",response);
 if (response.status === 200) {
     console.log("after",response);

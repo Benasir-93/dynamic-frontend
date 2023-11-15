@@ -33,7 +33,7 @@ console.log(portfolioId);
     // Fetch the existing portfolio data based on the ID and set it in the state.
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/portfolio/portfolio/${portfolioId}`);
+        const response = await axios.get(`https://dynamicportfoliobackend.onrender.com/api/portfolio/portfolio/${portfolioId}`);
         const portfolioData = response.data;
         const formattedStartDate = portfolioData.start && portfolioData.start.split('T')[0];
         const formattedEndDate = portfolioData.end && portfolioData.end.split('T')[0];
@@ -69,7 +69,7 @@ console.log(portfolioId);
     e.preventDefault();
 
     try {
-      const response = await axios.put(`http://localhost:8080/api/portfolio/${portfolioId}`, formData);
+      const response = await axios.put(`https://dynamicportfoliobackend.onrender.com/api/portfolio/${portfolioId}`, formData);
       if (response.status === 200) {
          navigate(`/portfolio-view/${portfolioId}`);
       }

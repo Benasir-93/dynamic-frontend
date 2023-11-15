@@ -26,7 +26,7 @@ export default function ForgotPassword() {
     try {
       const response = await axios.post(
         // "https://password-reset-backend-lo0n.onrender.com/api/user/ForgotPassword/",
-        `http://localhost:8080/api/user/ForgotPassword`,
+        `https://dynamicportfoliobackend.onrender.com/api/user/ForgotPassword`,
         values
       );
 

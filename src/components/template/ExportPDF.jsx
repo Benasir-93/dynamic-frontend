@@ -9,7 +9,7 @@ const ExportPDF = () => {
 
   useEffect(() => {
     // Fetch portfolio data using the portfolioId
-    axios.get(`http://localhost:8080/api/portfolio/portfolio/${portfolioId}`)
+    axios.get(`https://dynamicportfoliobackend.onrender.com/api/portfolio/portfolio/${portfolioId}`)
       .then((response) => {
         setFetchedPortfolioData(response.data);
       })

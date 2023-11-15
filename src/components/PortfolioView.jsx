@@ -22,7 +22,7 @@ const PortfolioView = () => {
 
   
   useEffect(() => {
-       axios.get(`http://localhost:8080/api/portfolio/portfolio/${portfolioId}`)
+       axios.get(`https://dynamicportfoliobackend.onrender.com/api/portfolio/portfolio/${portfolioId}`)
 
       .then((response) => {
 
@@ -43,7 +43,7 @@ const handleDelete = (portfolioId) => {
   // Implement delete functionality here
   const confirmDelete = window.confirm('Are you sure you want to delete this portfolio?');
   if (confirmDelete) {
-    axios.delete(`http://localhost:8080/api/portfolio/${portfolioId}`)
+    axios.delete(`https://dynamicportfoliobackend.onrender.com/api/portfolio/${portfolioId}`)
       .then(() => {
         
         console.log("successfully deleted");
@@ -87,8 +87,7 @@ const handleExportToPDF = () => {
          <RWebShare
         data={{
           text: "Hey I made this portfolio using dynamic portfolio web app",
-          // url: `https://dynamic--portfolio.vercel.app/portfolio/${item._id}`,
-           url: `http://localhost:8080/portfolio-view/${portfolioId}`,
+           url: `https://dynamicportfoliobackend.onrender.com/portfolio-view/${portfolioId}`,
           title: "Share your Portfolio",
         }}
         onClick={() => {

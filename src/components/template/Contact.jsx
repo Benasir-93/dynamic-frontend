@@ -12,7 +12,7 @@ function Contact() {
   const [portfolioData, setPortfolioData] = useState({});
 
   useEffect(() => {
-      axios.get(`http://localhost:8080/api/portfolio/portfolio/${portfolioId}`)
+      axios.get(`https://dynamicportfoliobackend.onrender.com/api/portfolio/portfolio/${portfolioId}`)
 
       .then((response) => {
 
