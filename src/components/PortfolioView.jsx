@@ -1,268 +1,110 @@
-// import React from 'react';
+// export default PortfolioView
+import React, { useState, useEffect,useRef } from 'react';
+import axios from 'axios';
+import { Link,useParams,useNavigate,Outlet } from "react-router-dom";
+import EditPortfolio from '../components/EditPortfolio';
+import '../components/template/portfolioview.css';
+import { RWebShare } from "react-web-share";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas'
+import { toast } from "react-toastify";
+import Experience from "../components/template/Experience";
+import Contact from "../components/template/Contact";
+import Intro from './template/Intro';
+import ExportToPDF from './template/ExportToPdf';
 
-// const PortfolioView = ({ formData }) => {
-//   return (
-//     <div className="text-dark mx-auto bg-light w-75 mt-5 mb-5">
-//       <h2 className="p-3">Portfolio Data</h2>
+const PortfolioView = () => {
+  const { portfolioId } = useParams();
+  const navigate = useNavigate();
+  const [portfolioData, setPortfolioData] = useState({});
+  // const [loader, setLoader] = useState(false);
+  const pdfContentRef = useRef();
 
-//       {/* Render the form data in a visually appealing way */}
-//       <div>
-//         <p><strong>Name:</strong> {formData.name}</p>
-//         <p><strong>Header:</strong> {formData.header}</p>
-//         <p><strong>About:</strong> {formData.about}</p>
-//         <p><strong>Resume URL:</strong> {formData.resume}</p>
-//         {/* Render other form fields here */}
-//       </div>
-//     </div>
-//   );
-// };
+  
+  useEffect(() => {
+       axios.get(`http://localhost:8080/api/portfolio/portfolio/${portfolioId}`)
 
-// export default PortfolioView;
-// ------------------------------------------------------------------------------------------------
-
-
-// import React, { useState } from 'react';
-// import { PDFViewer, Document, Page, Text, View, PDFDownloadLink } from '@react-pdf-viewer/react-pdf';
-// import Axios from 'axios';
-
-// const PortfolioView = ({ formData }) => {
-//   const [isEditing, setIsEditing] = useState(false);
-//   const [editedData, setEditedData] = useState({ ...formData });
-
-//   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-
-//   const togglePDFGeneration = () => {
-//     setIsGeneratingPDF(!isGeneratingPDF);
-//   };
-
-//   const handleEdit = () => {
-//     setIsEditing(true);
-//   };
-
-//   const handleSaveEdit = () => {
-//     // Send a PUT request to update the data
-//     Axios.put(`/api/update-portfolio/${formData.id}`, editedData)
-//       .then((response) => {
-//         // Handle the success, update state, or perform other actions
-//         setIsEditing(false);
-//       })
-//       .catch((error) => {
-//         // Handle errors
-//       });
-//   };
-
-//   const handleDelete = () => {
-//     const confirmDelete = window.confirm('Are you sure you want to delete this portfolio entry?');
-
-//     if (confirmDelete) {
-//       // Send a DELETE request to delete the data
-//       Axios.delete(`/api/delete-portfolio/${formData.id}`)
-//         .then((response) => {
-//           // Handle the success, navigate or perform other actions
-//         })
-//         .catch((error) => {
-//           // Handle errors
-//         });
-//     }
-//   };
-
-//   const pdfContent = (
-//     <Document>
-//       <Page size="A4">
-//         <View>
-//           <Text>
-//             <strong>Name:</strong> {formData.name}
-//           </Text>
-//           <Text>
-//             <strong>Header:</strong> {formData.header}
-//           </Text>
-//           <Text>
-//             <strong>About:</strong> {formData.about}
-//           </Text>
-//           <Text>
-//             <strong>Resume URL:</strong> {formData.resume}
-//           </Text>
-//           {/* Render other form fields here */}
-//         </View>
-//       </Page>
-//     </Document>
-//   );
-
-//   return (
-//     <div className="text-dark mx-auto bg-light w-75 mt-5 mb-5">
-//       <h2 className="p-3">Portfolio Data</h2>
-
-//       {isEditing ? (
-//         // Render an edit form with input fields for each data field
-//         <div>
-//           <input
-//             type="text"
-//             value={editedData.name}
-//             onChange={(e) => setEditedData({ ...editedData, name: e.target.value })}
-//           />
-//           {/* Render input fields for other data fields here */}
-//           <button onClick={handleSaveEdit}>Save</button>
-//         </div>
-//       ) : (
-//         // Display the data
-//         <div>
-//           <p><strong>Name:</strong> {formData.name}</p>
-//           <p><strong>Header:</strong> {formData.header}</p>
-//           <p><strong>About:</strong> {formData.about}</p>
-//           <p><strong>Resume URL:</strong> {formData.resume}</p>
-//           {/* Render other form fields here */}
-//         </div>)
-//       }
-
-//       <div>
-//         <button onClick={handleEdit}>Edit</button>
-//         <button onClick={handleDelete}>Delete</button>
-//         <button onClick={togglePDFGeneration}>
-//           {isGeneratingPDF ? 'Close PDF' : 'Export to PDF'}
-//         </button>
-//       </div>
-
-//       {isGeneratingPDF && (
-//         <PDFViewer width={600} height={800}>
-//           {pdfContent}
-//         </PDFViewer>
-//       )}
-
-//       {isGeneratingPDF && (
-//         <PDFDownloadLink document={pdfContent} fileName="portfolio.pdf">
-//           {({ blob, url, loading, error }) =>
-//             loading ? 'Loading document...' : 'Download PDF'
-//           }
-//         </PDFDownloadLink>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default PortfolioView;
-
-import React, { useState } from 'react';
-import Axios from 'axios';
-import { Document, Page, Text, View, StyleSheet, PDFViewer } from '@react-pdf/renderer';
-
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    margin: 10,
-    padding: 10,
-  },
-  heading: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  text: {
-    fontSize: 12,
-    marginBottom: 5,
-  },
-});
-
-const PortfolioView = ({ formData }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedData, setEditedData] = useState({ ...formData });
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-
-  const togglePDFGeneration = () => {
-    setIsGeneratingPDF(!isGeneratingPDF);
-  };
-
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleSaveEdit = () => {
-    // Send a PUT request to update the data
-    Axios.put(`/api/update-portfolio/${formData.id}`, editedData)
       .then((response) => {
-        // Handle the success, update state, or perform other actions
-        setIsEditing(false);
+
+        setPortfolioData(response.data);
+        console.log("response",response.data)
       })
       .catch((error) => {
-        // Handle errors
+        console.error('Error fetching portfolio data:', error);
       });
-  };
+  }, [portfolioId]);
 
-  const handleDelete = () => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this portfolio entry?');
 
-    if (confirmDelete) {
-      // Send a DELETE request to delete the data
-      Axios.delete(`/api/delete-portfolio/${formData.id}`)
-        .then((response) => {
-          // Handle the success, navigate or perform other actions
-        })
-        .catch((error) => {
-          // Handle errors
-        });
-    }
-  };
+const handleDelete = (portfolioId) => {
+  if (!portfolioId) {
+    console.error('Portfolio ID is not defined.');
+    return; // Exit the function
+  }
+  // Implement delete functionality here
+  const confirmDelete = window.confirm('Are you sure you want to delete this portfolio?');
+  if (confirmDelete) {
+    axios.delete(`http://localhost:8080/api/portfolio/${portfolioId}`)
+      .then(() => {
+        
+        console.log("successfully deleted");
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        console.error('Error deleting portfolio:', error);
+      });
+  }
+};
 
-  const pdfContent = (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <Text style={styles.heading}>
-          Name: {formData.name}
-        </Text>
-        <Text style={styles.text}>
-          Header: {formData.header}
-        </Text>
-        <Text style={styles.text}>
-          About: {formData.about}
-        </Text>
-        <Text style={styles.text}>
-          Resume URL: {formData.resume}
-        </Text>
-        {/* Render other form fields here */}
-      </Page>
-    </Document>
-  );
+
+
+const handleExportToPDF = () => {
+  // Navigate to the export-pdf route with the portfolioId parameter
+  navigate(`/export-pdf/${portfolioId}`);
+};
 
   return (
-    <div className="text-dark mx-auto bg-light w-75 mt-5 mb-5">
-      <h2 className="p-3">Portfolio Data</h2>
+   
+   <>
+    <div  className='portfolio-view-content' id='background-container'>
+       <Outlet />
+    {/* controll button */}
 
-      {isEditing ? (
-        // Render an edit form with input fields for each data field
-        <div>
-          <input
-            type="text"
-            value={editedData.name}
-            onChange={(e) => setEditedData({ ...editedData, name: e.target.value })}
-          />
-          {/* Render input fields for other data fields here */}
-          <button onClick={handleSaveEdit}>Save</button>
-        </div>
-      ) : (
-        // Display the data
-        <div>
-          <p><strong>Name:</strong> {formData.name}</p>
-          <p><strong>Header:</strong> {formData.header}</p>
-          <p><strong>About:</strong> {formData.about}</p>
-          <p><strong>Resume URL:</strong> {formData.resume}</p>
-          {/* Render other form fields here */}
-        </div>
-      )}
-
-      <div>
-        <button onClick={handleEdit}>Edit</button>
-        <button onClick={handleDelete}>Delete</button>
-        <button onClick={togglePDFGeneration}>
-          {isGeneratingPDF ? 'Close PDF' : 'Export to PDF'}
+    <div className="mt-3 mx-auto p-3 ">
+       <Link to={`/edit-portfolio/${portfolioId}`}>
+         <button type="button" className="btn btn-primary me-3 px-3 mt-2">
+           Edit
+         </button>
+       </Link>
+       <button onClick={() => handleDelete(portfolioId)} className="btn btn-danger  me-3 px-3 mt-2">
+         Delete
+       </button>
+     
+         <button onClick={handleExportToPDF} className="btn btn-success me-3 px-3 mt-2">
+          Export to PDF
         </button>
-      </div>
-
-      {isGeneratingPDF && (
-        <PDFViewer width={600} height={800}>
-          {pdfContent}
-        </PDFViewer>
-      )}
+     
+   
+         <RWebShare
+        data={{
+          text: "Hey I made this portfolio using dynamic portfolio web app",
+          // url: `https://dynamic--portfolio.vercel.app/portfolio/${item._id}`,
+           url: `http://localhost:8080/portfolio-view/${portfolioId}`,
+          title: "Share your Portfolio",
+        }}
+        onClick={() => {
+          toast.success("Successful !");
+        }}>
+        <button className="btn btn-warning   me-3 px-3 mt-2" title="Share Portfolio">share</button>
+      </RWebShare>
+      <Link to={`/dashboard`}>
+         <button type="button" className="btn btn-dark fw-bold me-3 px-3 mt-2">
+           home
+         </button>
+       </Link>
     </div>
+   
+    </div>
+    </>
   );
 };
 

@@ -52,7 +52,7 @@ export default function Login() {
     localStorage.setItem("userName", `${data?.userName}`);
     localStorage.setItem("userID", `${data?.userID}`);
 
-    toast.success("Welcome To Home Page", {
+    toast.success("Welcome To Dashoard", {
       position: "top-right",
       autoClose: 1500,
       hideProgressBar: false,
