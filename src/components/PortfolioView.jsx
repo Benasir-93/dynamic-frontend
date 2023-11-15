@@ -87,7 +87,7 @@ const handleExportToPDF = () => {
          <RWebShare
         data={{
           text: "Hey I made this portfolio using dynamic portfolio web app",
-           url: `https://dynamicportfoliobackend.onrender.com/portfolio-view/${portfolioId}`,
+           url: `https://dynamicportfolio.netlify.app/portfolio-view/${portfolioId}`,
           title: "Share your Portfolio",
         }}
         onClick={() => {
